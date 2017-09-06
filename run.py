@@ -1,5 +1,5 @@
 # from flask import Flask
-from lxml import html
+#from lxml import html
 import requests
 from selenium import webdriver
 import time
