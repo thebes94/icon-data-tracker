@@ -8,6 +8,7 @@ import config
 from helpers.login import login
 from helpers.scroll_page import scroll
 from helpers.datetime_parser import parse_noun_date
+from helpers.revenue_data import all_revenues
 # from flask import Flask
 # app = Flask(__name__)
 
@@ -29,6 +30,9 @@ driver = webdriver.Chrome('/Applications/chromedriver')
 driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity/')
 
 login(driver)       #login to the app using info from config
+all_revenues(driver)
+
+driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity/')
 # the current time, we will need since datetimes are relative to the now
 now = datetime.now()       
 finished_scroll = scroll(driver)      #scrolls icons full page
@@ -63,37 +67,6 @@ with open(config.csv_file_name, 'wt') as csvfile:
         # activity_datetime = now.replace(second=0,microsecond=0) #todo implement rounding yourself if you care
         activity_time = activity.find_element_by_class_name('date-of-action').text
         activity_datetime = parse_noun_date(activity_time, now)
-        # comma_index = activity_time.find(',')
-        # minute_index = activity_time.find('minute')
-        # hour_index = activity_time.find('hour')
-        # day_index = activity_time.find('day')
-        # week_index = activity_time.find('week')
-        # month_index = activity_time.find('month')
-        # year_index = activity_time.find('year')
-
-        # if minute_index >=0 and hour_index < 0: #just minutes
-        #     activity_datetime = activity_datetime - timedelta(minutes=int(activity_time[:minute_index])) 
-        # elif minute_index >=0 and hour_index >=0: #mintes and hours eg. 1 hour, 5 minutes ago
-        #     activity_datetime = activity_datetime - timedelta(hours=int(activity_time[:hour_index]),minutes=int(activity_time[comma_index+2:minute_index])) 
-        # elif hour_index >= 0 and day_index < 0: #just hours
-        #     activity_datetime = activity_datetime - timedelta(days=int(activity_time[:hour_index])) 
-        # elif hour_index >= 0 and day_index >= 0: #days and hours eg. 1 day, 5 hours ago
-        #     activity_datetime = activity_datetime - timedelta(hours=int(activity_time[:day_index]),minutes=int(activity_time[comma_index+2:hour_index])) 
-        # elif day_index >= 0 and week_index < 0: #just days
-        #     activity_datetime = activity_datetime - timedelta(days=int(activity_time[:day_index])) 
-        # elif day_index >= 0 and week_index >= 0: #weeks and days eg. 1 week, 5 days
-        #     activity_datetime = activity_datetime - timedelta(days=int(activity_time[:week_index])+int(activity_time[comma_index+2:day_index])) 
-        # elif week_index >= 0 and month_index < 0: #just weeks
-        #     activity_datetime = activity_datetime - timedelta(days=7*int(activity_time[:week_index-1])) 
-        # elif week_index >= 0 and month_index >=0: #months and weeks eg. 1 month, 2 weeks
-        #     activity_datetime = activity_datetime - timedelta(days=7*int(activity_time[comma_index+2:week_index])) 
-        #     activity_datetime = activity_datetime - relativedelta(months=int(activity_time[:month_index]))
-        # elif month_index >= 0 and year_index <=0: #just months
-        #     activity_datetime = activity_datetime - relativedelta(months=int(activity_time[:month_index]))
-        # elif month_index >= 0 and year_index > 0: #all that could be left is years and months, eg. 1 year, 5 months ago
-        #     activity_datetime = activity_datetime - relativedelta(years=int(activity_time[:year_index]),months=int(activity_time[comma_index+2:month_index])) 
-        # else:#just year
-        #     activity_datetime = activity_datetime - relativedelta(years=int(activity_time[:year_index])) 
 
         # enter into database the info we've collected
         filewriter.writerow([icon_id,action_user, activity_type, activity_datetime])
