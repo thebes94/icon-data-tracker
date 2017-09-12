@@ -9,6 +9,7 @@ from helpers.login import login
 from helpers.scroll_page import scroll
 from helpers.datetime_parser import parse_noun_date
 from helpers.revenue_data import all_revenues
+from helpers.icons_details import get_icons
 # from flask import Flask
 # app = Flask(__name__)
 
@@ -30,6 +31,7 @@ driver = webdriver.Chrome('/Applications/chromedriver')
 driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity/')
 
 login(driver)       #login to the app using info from config
+get_icons(driver)
 all_revenues(driver)
 
 driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity/')
