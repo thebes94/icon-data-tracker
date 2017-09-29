@@ -10,6 +10,8 @@ from helpers.scroll_page import scroll
 from helpers.datetime_parser import parse_noun_date
 from helpers.revenue_data import all_revenues
 from helpers.icons_details import get_icons
+from openpyxl import Workbook
+
 # from flask import Flask
 # app = Flask(__name__)
 
@@ -23,6 +25,10 @@ from helpers.icons_details import get_icons
 
 # Optional argument, if not specified will search path
 driver = webdriver.Chrome('/Applications/chromedriver')
+
+#this workbook is where we are gonna write all our data to (for now)
+wb = Workbook()
+
 # options = webdriver.ChromeOptions()
 # options.binary_location = '/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary'
 # options.add_argument('window-size=800x841')
@@ -32,7 +38,10 @@ driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity
 
 login(driver)       #login to the app using info from config
 get_icons(driver)
-all_revenues(driver)
+all_revenues(driver, wb)
+
+#gotta save all that hard work
+wb.save('test.xlsx')
 
 driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity/')
 # the current time, we will need since datetimes are relative to the now
