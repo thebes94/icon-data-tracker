@@ -37,7 +37,7 @@ wb = Workbook()
 driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity/')
 
 login(driver)       #login to the app using info from config
-get_icons(driver)
+get_icons(driver, wb)
 all_revenues(driver, wb)
 
 #gotta save all that hard work
@@ -47,6 +47,10 @@ driver.get('https://thenounproject.com/'+config.noun_project_username+'/activity
 # the current time, we will need since datetimes are relative to the now
 now = datetime.now()       
 finished_scroll = scroll(driver)      #scrolls icons full page
+
+ws = wb.create_sheet("Activity", 0)
+ws.append(['Icon ID', 'Username', 'Action', 'DateTime'])
+
 
 # read the info we care about from each activity entry
 activities_list = driver.find_element_by_id('activity-list')
@@ -81,5 +85,8 @@ with open(config.csv_file_name, 'wt') as csvfile:
 
         # enter into database the info we've collected
         filewriter.writerow([icon_id,action_user, activity_type, activity_datetime])
-
+        ws.append([icon_id, action_user, activity_type, activity_datetime])
+    
+#gotta save all that hard work
+wb.save('test.xlsx')
 driver.quit()
