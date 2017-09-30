@@ -23,6 +23,5 @@ def get_icons(driver, wb):
         icon_id = icon_url[icon_url.rfind('/')+1:]
         icon_url = icon_url[:icon_url.rfind('/')]
         icon_name = icon_url[icon_url.rfind('/')+1:]
-        #print('Downloads: ', number_downloads, ' Icon Id: ', icon_id, ' Name: ', icon_name)
         ws.append([icon_name, icon_id, number_downloads])
 

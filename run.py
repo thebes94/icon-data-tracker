@@ -3,7 +3,7 @@ from selenium import webdriver
 import time
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-import csv
+#import csv
 import config
 from helpers.login import login
 from helpers.scroll_page import scroll
@@ -56,8 +56,6 @@ ws.append(['Icon ID', 'Username', 'Action', 'DateTime'])
 activities_list = driver.find_element_by_id('activity-list')
 activities = activities_list.find_elements_by_css_selector('li')
 with open(config.csv_file_name, 'wt') as csvfile:
-    filewriter = csv.writer(csvfile, delimiter=',',quoting=csv.QUOTE_MINIMAL)
-    filewriter.writerow(['Icon Id','Username', 'Action', 'Datetime']) #headers
 
     for activity in activities:
         # determine the id of the icon
@@ -84,7 +82,6 @@ with open(config.csv_file_name, 'wt') as csvfile:
         activity_datetime = parse_noun_date(activity_time, now)
 
         # enter into database the info we've collected
-        filewriter.writerow([icon_id,action_user, activity_type, activity_datetime])
         ws.append([icon_id, action_user, activity_type, activity_datetime])
     
 #gotta save all that hard work
